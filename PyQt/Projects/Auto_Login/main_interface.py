@@ -236,7 +236,7 @@ class LoginDlg(QMainWindow):
         self.status_textEdit.setFixedHeight(90)
         self.status_textEdit.setReadOnly(True)      # 设置属性为只读
         self.head_label = QLabel(self)
-        self.head_label.setPixmap(QPixmap(r'D:\Desktop\PyQt learning\Auto_Login\icons\head.jpg'))
+        self.head_label.setPixmap(QPixmap(r'D:\Desktop//PyQt learning//Auto_Login//icons//head.jpg'))
         self.id_lineEdit = QLineEdit()
         self.pwd_lineEdit = QLineEdit()
         self.id_lineEdit.setPlaceholderText("学号")
@@ -285,7 +285,7 @@ class LoginDlg(QMainWindow):
         self.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
         self.resize(485, 325)
         self.setWindowTitle("校园网登陆客户端")
-        self.setWindowIcon(QIcon(r"D:\Desktop\PyQt learning\Auto_Login\icons\net_fail.png"))
+        self.setWindowIcon(QIcon(r"D://Desktop//PyQt learning//Auto_Login//icons//net_fail.png"))
         myWidget.setLayout(self.gridLayout)
         self.setCentralWidget(myWidget)
         self.setFixedSize(self.width(), self.height())  # 禁止窗口拉伸
@@ -303,7 +303,7 @@ class LoginDlg(QMainWindow):
         """
         self.trayIcon.hide()
 
-    def trayClick(self,reason):
+    def trayClick(self, reason):
         """
         托盘点击响应事件
         :return:
@@ -323,9 +323,9 @@ class LoginDlg(QMainWindow):
             menu = QMenu()
             menu.addAction(quitAction)
             if self.login_btn.text() == '登录':
-                self.trayIcon.setIcon(QIcon(r"D:\Desktop\PyQt learning\Auto_Login\icons\net_fail.png"))
+                self.trayIcon.setIcon(QIcon(r"D://Desktop//PyQt learning//Auto_Login//icons//net_fail.png"))
             else:
-                self.trayIcon.setIcon(QIcon(r"D:\Desktop\PyQt learning\Auto_Login\icons\net_success.png"))
+                self.trayIcon.setIcon(QIcon(r"D://Desktop//PyQt learning//Auto_Login//icons//net_success.png"))
             self.trayIcon.setToolTip("校园网客户端")
             self.trayIcon.showMessage("校园网客户端","已最小化至托盘")
             self.trayIcon.setContextMenu(menu)
@@ -377,7 +377,7 @@ class LoginDlg(QMainWindow):
                 if connect.connect_to_network(self, id, pwd):
                     self.weather_info = '                                                  天气信息正在加载...'
                     self.status_textEdit.append(connect.current_time() + '  ' + "登录成功")
-                    self.setWindowIcon(QIcon(r"D:\Desktop\PyQt learning\Auto_Login\icons\net_success.png"))
+                    self.setWindowIcon(QIcon(r"D://Desktop///PyQt learning//Auto_Login//icons//net_success.png"))
                     self.login_btn.setText('注销')
                     self.login_btn.setStyleSheet("color:white;background:red")
                     self.widgetEnable(True)
@@ -393,7 +393,7 @@ class LoginDlg(QMainWindow):
                     self.pwd_lineEdit.setPlaceholderText("请输入密码")
         else:
             if connect.disconnect_from_network(self, id, pwd):
-                self.setWindowIcon(QIcon(r"D:\Desktop\PyQt learning\Auto_Login\icons\net_fail.png"))
+                self.setWindowIcon(QIcon(r"D://Desktop//PyQt learning//Auto_Login//icons//net_fail.png"))
                 self.widgetEnable(False)
                 self.login_btn.setText('登录')
                 self.login_btn.setStyleSheet("color:white;background:green")
