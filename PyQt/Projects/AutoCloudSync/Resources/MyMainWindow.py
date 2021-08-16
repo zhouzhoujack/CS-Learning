@@ -17,7 +17,7 @@ sys.path.append(path)
 from Forms import Ui_MyMainWindow
 
 clickTimes = 0      # 记录点击次数用于终止鼠标监听事件
-pos = []            # 记录云同步时鼠标三次点击的位置
+pos = [[0,0],[0,0]]            # 记录云同步时鼠标三次点击的位置
 interval = 10       # 设置云同步间隔时间,默认为10
 isClicked = False   # 记录button是否被点击过
 isCloudSycn = True  # 控制后台的自动同步
@@ -90,6 +90,9 @@ def pushButton_3ClickedEvent(ui):
         if clickTimes == 3:
             return False
 
+    global pos
+    pos = []
+
     # 连接事件以及释放
     # 这里的Listener是监听鼠标点击事件来获取桌面坐标
     """
@@ -101,6 +104,12 @@ def pushButton_3ClickedEvent(ui):
     global clickTimes
     clickTimes = 0
     print("自动云同步设置完成!")
+
+    # 将button的坐标保存到默认设置中，以便下次重启使用
+    settings = QSettings("HXZZ", "AutoCloudSync")
+    settings.beginGroup("Button_Positions")
+    settings.setValue("pos", pos)
+    settings.endGroup()
 
     ui.pushButton.setEnabled(True)
     ui.pushButton_2.setEnabled(True)
@@ -140,6 +149,9 @@ class MainWindow(QMainWindow):
         # 控件的事件绑定
         self.widgetsSetting(ui)
 
+        # 加载保存的按钮坐标
+        self.loadSettings(ui)
+
     def windowSetting(self):
         self.setFixedSize(self.width(), self.height())
 
@@ -154,3 +166,15 @@ class MainWindow(QMainWindow):
         ui.lineEdit.setText(str(interval))
         ui.checkBox.setChecked(True)
         ui.checkBox.stateChanged.connect(lambda:checkBoxStateChangedEvent(ui))
+
+    def loadSettings(self, ui):
+        settings = QSettings("HXZZ", "AutoCloudSync")
+        settings.beginGroup("Button_Positions")
+
+        global pos
+        pos = settings.value("pos")
+        print(pos)
+
+        if pos is not None:
+            ui.pushButton.setEnabled(True)
+            ui.pushButton_2.setEnabled(True)
