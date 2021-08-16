@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'MainScene.ui'
+# Form implementation generated from reading ui file 'c:\Users\0317\Desktop\CS-Learning\PyQt\Projects\AutoCloudSync\Forms\MyMainWindow.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -18,20 +18,21 @@ class Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton.setGeometry(QtCore.QRect(270, 60, 101, 31))
+        self.pushButton.setGeometry(QtCore.QRect(240, 60, 81, 31))
         self.pushButton.setObjectName("pushButton")
         self.lineEdit = QtWidgets.QLineEdit(self.centralwidget)
-        self.lineEdit.setGeometry(QtCore.QRect(140, 60, 113, 31))
+        self.lineEdit.setGeometry(QtCore.QRect(120, 60, 113, 31))
         self.lineEdit.setObjectName("lineEdit")
         self.label = QtWidgets.QLabel(self.centralwidget)
-        self.label.setGeometry(QtCore.QRect(30, 60, 101, 31))
+        self.label.setGeometry(QtCore.QRect(20, 60, 101, 31))
         self.label.setObjectName("label")
         self.checkBox = QtWidgets.QCheckBox(self.centralwidget)
         self.checkBox.setGeometry(QtCore.QRect(330, 10, 111, 21))
         self.checkBox.setObjectName("checkBox")
+        self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_2.setGeometry(QtCore.QRect(330, 60, 81, 31))
+        self.pushButton_2.setObjectName("pushButton_2")
         MainWindow.setCentralWidget(self.centralwidget)
-
-        MainWindow.setFixedSize(MainWindow.width(), MainWindow.height())
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -42,3 +43,4 @@ class Ui_MainWindow(object):
         self.pushButton.setText(_translate("MainWindow", "开始执行"))
         self.label.setText(_translate("MainWindow", "同步间隔（小时）"))
         self.checkBox.setText(_translate("MainWindow", "开机自启动"))
+        self.pushButton_2.setText(_translate("MainWindow", "结束执行"))
