@@ -52,9 +52,6 @@ def pushButtonClickedEvent(ui, win):
 
     global interval
     interval = int(ui.lineEdit.text())
-    
-    global isCloudSycn
-    isCloudSycn = True             # 开启自动云同步的线程
 
     win.timer_.start(interval*_MILISECONDS_TO_HOUR)
     print("开始自动云同步...")
