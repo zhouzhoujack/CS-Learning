@@ -11,10 +11,12 @@ from PyQt5.QtCore import QDir, QThread, QSettings, QFileInfo, QCoreApplication, 
 from PyQt5.QtWidgets import QMessageBox, QMainWindow
 from threading import Thread
 
+
 import sys,os 
 path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(path) 
 from Forms import Ui_MyMainWindow
+from Resources import res_rc
 
 _MILISECONDS_TO_HOUR = 1000     # 毫秒转为小时 3600*1000
 
@@ -48,7 +50,7 @@ def pushButtonClickedEvent(ui, win):
     ui.pushButton.setEnabled(False)
     ui.pushButton.setText("执行中")
     ui.pushButton_3.setEnabled(False)
-    win.setWindowIcon(QIcon(r"C:\\Users\\0317\\Desktop\\CS-Learning\\PyQt\\Projects\\AutoCloudSync\\img\\icon_on.png"))
+    win.setWindowIcon(QIcon(r":/img/icon_on.png"))
 
     global interval
     interval = int(ui.lineEdit.text())
@@ -63,7 +65,7 @@ def pushButton_2ClickedEvent(ui, win):
     ui.lineEdit.setEnabled(True)
     ui.pushButton.setEnabled(True)
     ui.pushButton_3.setEnabled(True)
-    win.setWindowIcon(QIcon(r"C:\\Users\\0317\\Desktop\\CS-Learning\\PyQt\\Projects\\AutoCloudSync\\img\\icon_off.png"))
+    win.setWindowIcon(QIcon(r":/img/icon_off.png"))
     ui.pushButton.setText("开始执行")
 
     print("结束执行")
@@ -150,7 +152,7 @@ class MainWindow(QMainWindow):
     def widgetsSetting(self, ui):
         self.timer_.timeout.connect(lambda: timeoutEvent())
 
-        self.setWindowIcon(QIcon(r"C:\\Users\\0317\\Desktop\\CS-Learning\\PyQt\\Projects\\AutoCloudSync\\img\\icon_off.png"))
+        self.setWindowIcon(QIcon(r":/img/icon_off.png"))
 
         ui.pushButton.clicked.connect(lambda: pushButtonClickedEvent(ui, self))
         ui.pushButton_2.clicked.connect(lambda: pushButton_2ClickedEvent(ui, self))
