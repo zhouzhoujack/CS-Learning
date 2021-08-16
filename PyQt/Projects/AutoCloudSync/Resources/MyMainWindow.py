@@ -52,7 +52,9 @@ def pushButtonClickedEvent(ui):
     autoSyncThread = Thread(target=thread_func)     # 云同步线程
 
     ui.lineEdit.setEnabled(False)
-    ui.pushButton_3.setEnable(False)
+    ui.pushButton.setEnabled(False)
+    ui.pushButton.setText("执行中")
+    ui.pushButton_3.setEnabled(False)
 
     # messBox = QMessageBox()
     # messBox.setWindowTitle(u'提示')
@@ -61,9 +63,7 @@ def pushButtonClickedEvent(ui):
 
     global interval
     interval = int(ui.lineEdit.text())
-
     print("开始自动云同步...")
-
     autoSyncThread.start()
 
 
@@ -72,6 +72,9 @@ def pushButton_2ClickedEvent(ui):
     global isCloudSycn
     isCloudSycn = False             # 关闭自动云同步的线程
     ui.lineEdit.setEnabled(True)
+    ui.pushButton.setEnabled(True)
+    ui.pushButton_3.setEnabled(True)
+    ui.pushButton.setText("开始执行")
     print("结束执行")
 
 def pushButton_3ClickedEvent(ui):
@@ -86,14 +89,20 @@ def pushButton_3ClickedEvent(ui):
         if clickTimes == 3:
             return False
 
-    
     # 连接事件以及释放
-    # TODO(多线程需要主动退出)
     # 这里的Listener是监听鼠标点击事件来获取桌面坐标
+    """
+    TODO (多线程执行完未完全退出)
+    """
     with Listener(on_click=on_click) as listener:
         listener.join()
 
+    global clickTimes
+    clickTimes = 0
     print("自动云同步设置完成!")
+
+    ui.pushButton.setEnabled(True)
+    ui.pushButton_2.setEnabled(True)
 
 def checkBoxStateChangedEvent(ui):
     # TODO 开机自动云同步一次，并隐藏在后台执行
@@ -120,6 +129,8 @@ class MainWindow(QMainWindow):
     def widgetsSetting(self, ui):
         ui.pushButton.clicked.connect(lambda: pushButtonClickedEvent(ui))
         ui.pushButton_2.clicked.connect(lambda: pushButton_2ClickedEvent(ui))
+        ui.pushButton.setEnabled(False)
+        ui.pushButton_2.setEnabled(False)
         ui.pushButton_3.clicked.connect(lambda: pushButton_3ClickedEvent(ui))
         ui.lineEdit.setText(str(interval))
         ui.checkBox.setChecked(True)
