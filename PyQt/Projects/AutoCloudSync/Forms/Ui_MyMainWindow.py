@@ -46,7 +46,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "桌面日历自动云同步"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "桌面日历自动云同步@hxzz"))
         self.pushButton.setText(_translate("MainWindow", "开始执行"))
         self.label.setText(_translate("MainWindow", "同步间隔（小时）"))
         self.checkBox.setText(_translate("MainWindow", "开机自启动"))

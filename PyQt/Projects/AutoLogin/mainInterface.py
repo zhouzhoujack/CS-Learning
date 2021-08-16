@@ -259,6 +259,7 @@ class LoginDlg(QMainWindow):
         self.autoshutdown_btn.setFixedHeight(32)
         self.autoshutdown_btn.clicked.connect(self.autoShutDown)
         self.login_btn.setStyleSheet("background:green;color:white")
+        
         self.trayIcon = QSystemTrayIcon()
         self.trayIcon.activated.connect(self.trayClick)
 
