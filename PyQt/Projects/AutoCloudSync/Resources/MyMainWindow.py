@@ -7,7 +7,7 @@ import pyautogui as pg
 import time
 from pynput.mouse import Listener
 from PyQt5 import QtCore
-from PyQt5.QtCore import QThread
+from PyQt5.QtCore import QDir, QThread, QSettings, QFileInfo, QCoreApplication
 from PyQt5.QtWidgets import QMessageBox, QMainWindow
 from threading import Thread
 
@@ -16,9 +16,9 @@ path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(path) 
 from Forms import Ui_MyMainWindow
 
-clickTimes = 0  # 记录点击次数用于终止鼠标监听事件
-pos = []        # 记录云同步时鼠标三次点击的位置
-interval = 10   # 设置云同步间隔时间,默认为10
+clickTimes = 0      # 记录点击次数用于终止鼠标监听事件
+pos = []            # 记录云同步时鼠标三次点击的位置
+interval = 10       # 设置云同步间隔时间,默认为10
 isClicked = False   # 记录button是否被点击过
 isCloudSycn = True  # 控制后台的自动同步
 
@@ -61,6 +61,10 @@ def pushButtonClickedEvent(ui, win):
     global interval
     interval = int(ui.lineEdit.text())
     print("开始自动云同步...")
+
+    global isCloudSycn
+    isCloudSycn = True             # 开启自动云同步的线程
+
     autoSyncThread.start()
 
 def pushButton_2ClickedEvent(ui, win):
@@ -103,8 +107,26 @@ def pushButton_3ClickedEvent(ui):
 
 def checkBoxStateChangedEvent(ui):
     # TODO 开机自动云同步一次，并隐藏在后台执行
-    print(ui.checkBox.isChecked())
+    appPath = QCoreApplication.applicationFilePath()
+    print(appPath)
 
+    changedFlag = ui.checkBox.isChecked()
+    settings = QSettings("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run",
+                       QSettings.Registry64Format)
+    
+    # 以程序名称作为注册表中的键
+    # 根据键获取对应的值（程序路径）
+    fInfo = QFileInfo()
+    key = fInfo.baseName()
+    # value = settings.value(key).toString()
+    value = ""
+
+    settings.setValue(key, value)
+
+    if(changedFlag):
+        value = QDir.toNativeSeparators(appPath)
+        settings.setValue(key, value)
+    
 
 class MainWindow(QMainWindow):
     def __init__(self):
