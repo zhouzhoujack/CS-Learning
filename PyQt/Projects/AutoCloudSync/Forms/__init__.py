@@ -1,1 +1,1 @@
-from . import UiMainWindow
+from . import Ui_MyMainWindow
