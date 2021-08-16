@@ -107,12 +107,11 @@ def pushButton_3ClickedEvent(ui):
 
 def checkBoxStateChangedEvent(ui):
     # TODO 开机自动云同步一次，并隐藏在后台执行
-    appPath = QCoreApplication.applicationFilePath()
+    appPath = QCoreApplication.applicationDirPath() 
     print(appPath)
 
     changedFlag = ui.checkBox.isChecked()
-    settings = QSettings("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run",
-                       QSettings.Registry64Format)
+    settings = QSettings("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run")
     
     # 以程序名称作为注册表中的键
     # 根据键获取对应的值（程序路径）
@@ -127,7 +126,6 @@ def checkBoxStateChangedEvent(ui):
         value = QDir.toNativeSeparators(appPath)
         settings.setValue(key, value)
     
-
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
