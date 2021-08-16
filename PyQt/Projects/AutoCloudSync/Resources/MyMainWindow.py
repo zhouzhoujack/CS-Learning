@@ -2,6 +2,7 @@
 对MainWindow的控件进行事件绑定
 """
 from typing import overload
+from PyQt5.QtGui import QIcon
 import pyautogui as pg
 import time
 from pynput.mouse import Listener
@@ -45,7 +46,7 @@ def thread_func():
         performOperations(pos[0], pos[1], pos[2])
         print("Done!")
 
-def pushButtonClickedEvent(ui):
+def pushButtonClickedEvent(ui, win):
     global isClicked
     isClicked = 1-isClicked
 
@@ -55,25 +56,21 @@ def pushButtonClickedEvent(ui):
     ui.pushButton.setEnabled(False)
     ui.pushButton.setText("执行中")
     ui.pushButton_3.setEnabled(False)
-
-    # messBox = QMessageBox()
-    # messBox.setWindowTitle(u'提示')
-    # messBox.setText(u'请手动执行一次桌面日历云同步操作... ')
-    # messBox.exec_()
+    win.setWindowIcon(QIcon(r"C:\\Users\\0317\\Desktop\\CS-Learning\\PyQt\\Projects\\AutoCloudSync\\img\\icon_on.png"))
 
     global interval
     interval = int(ui.lineEdit.text())
     print("开始自动云同步...")
     autoSyncThread.start()
 
-
-def pushButton_2ClickedEvent(ui):
+def pushButton_2ClickedEvent(ui, win):
     # 关闭云同步
     global isCloudSycn
     isCloudSycn = False             # 关闭自动云同步的线程
     ui.lineEdit.setEnabled(True)
     ui.pushButton.setEnabled(True)
     ui.pushButton_3.setEnabled(True)
+    win.setWindowIcon(QIcon(r"C:\\Users\\0317\\Desktop\\CS-Learning\\PyQt\\Projects\\AutoCloudSync\\img\\icon_off.png"))
     ui.pushButton.setText("开始执行")
     print("结束执行")
 
@@ -127,8 +124,10 @@ class MainWindow(QMainWindow):
         self.setFixedSize(self.width(), self.height())
 
     def widgetsSetting(self, ui):
-        ui.pushButton.clicked.connect(lambda: pushButtonClickedEvent(ui))
-        ui.pushButton_2.clicked.connect(lambda: pushButton_2ClickedEvent(ui))
+        self.setWindowIcon(QIcon(r"C:\\Users\\0317\\Desktop\\CS-Learning\\PyQt\\Projects\\AutoCloudSync\\img\\icon_off.png"))
+
+        ui.pushButton.clicked.connect(lambda: pushButtonClickedEvent(ui, self))
+        ui.pushButton_2.clicked.connect(lambda: pushButton_2ClickedEvent(ui, self))
         ui.pushButton.setEnabled(False)
         ui.pushButton_2.setEnabled(False)
         ui.pushButton_3.clicked.connect(lambda: pushButton_3ClickedEvent(ui))
