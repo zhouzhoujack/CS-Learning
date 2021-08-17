@@ -9,7 +9,7 @@ from pynput.mouse import Listener
 from PyQt5 import QtCore
 from PyQt5.QtCore import QDir, QSettings, QFileInfo, QCoreApplication, QTimer, QRegExp
 from PyQt5.QtGui import QRegExpValidator
-from PyQt5.QtWidgets import qApp, QMessageBox, QMainWindow, QSystemTrayIcon, QAction, QMenu
+from PyQt5.QtWidgets import qApp, QMessageBox, QMainWindow, QSystemTrayIcon, QAction, QMenu, QToolTip
 
 import sys,os 
 path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -71,7 +71,7 @@ def pushButtonClickedEvent(win):
 
     performOperations(pos[0], pos[1], pos[2])
     win.timer_.start(int(interval*_MILISECONDS_TO_HOUR))
-
+    
     print("开始自动云同步...")
 
 def pushButton_2ClickedEvent(win):
@@ -151,7 +151,8 @@ def checkBoxStateChangedEvent(ui):
     if(changedFlag):
         value = QDir.toNativeSeparators(appPath)
         settings.setValue(key, value)
-    
+
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
@@ -159,8 +160,9 @@ class MainWindow(QMainWindow):
         self.timer_ = QTimer(self)
 
         # 系统托盘
-        self.trayIcon_ = QSystemTrayIcon()      
+        self.trayIcon_ = QSystemTrayIcon()     
         self.trayIcon_.activated.connect(self.trayClick)
+        self.trayIcon_.setToolTip("xxx")
 
         # 界面的UI初始化,这部分代码由QT编译器自动生成，不用动
         self.ui = Ui_MyMainWindow.Ui_MainWindow()
@@ -225,6 +227,12 @@ class MainWindow(QMainWindow):
             self.showNormal()
             self.activateWindow()
 
+    def resetScript(self):
+        """
+        重置自动云同步
+        """
+        pushButtonClickedEvent(self)
+
     def changeEvent(self, event):
         """
         重写窗口状态改变函数
@@ -237,11 +245,12 @@ class MainWindow(QMainWindow):
             if self.windowState() & QtCore.Qt.WindowMinimized:
                 event.ignore()
                 print("窗口最小化")
-                quitAction = QAction(u"退出", self, triggered = qApp.quit)
+                quitAction = QAction(u"退出", self, triggered=qApp.quit)
+                resetScriptAction = QAction(u"重置运行", self, triggered=self.resetScript)
                 menu = QMenu()
+                menu.addAction(resetScriptAction)
                 menu.addAction(quitAction)
                 self.trayIcon_.setContextMenu(menu)
-
                 self.trayIcon_.setIcon(QIcon(r":/img/icon_off.png"))
 
                 if not self.ui.pushButton.isEnabled():
