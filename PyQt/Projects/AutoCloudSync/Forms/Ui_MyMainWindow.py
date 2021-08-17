@@ -10,7 +10,6 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -18,10 +17,10 @@ class Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton.setGeometry(QtCore.QRect(260, 80, 81, 31))
+        self.pushButton.setGeometry(QtCore.QRect(270, 80, 81, 31))
         self.pushButton.setObjectName("pushButton")
         self.lineEdit = QtWidgets.QLineEdit(self.centralwidget)
-        self.lineEdit.setGeometry(QtCore.QRect(130, 80, 113, 31))
+        self.lineEdit.setGeometry(QtCore.QRect(130, 80, 121, 31))
         self.lineEdit.setObjectName("lineEdit")
         self.label = QtWidgets.QLabel(self.centralwidget)
         self.label.setGeometry(QtCore.QRect(20, 80, 101, 31))
@@ -46,9 +45,11 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "桌面日历自动云同步@hxzz"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "桌面日历自动云同步"))
         self.pushButton.setText(_translate("MainWindow", "开始执行"))
         self.label.setText(_translate("MainWindow", "同步间隔（小时）"))
         self.checkBox.setText(_translate("MainWindow", "开机自启动"))
         self.pushButton_2.setText(_translate("MainWindow", "结束执行"))
         self.pushButton_3.setText(_translate("MainWindow", "初始化"))
+
+

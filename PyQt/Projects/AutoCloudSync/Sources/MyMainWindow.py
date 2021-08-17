@@ -7,7 +7,8 @@ import pyautogui as pg
 import time
 from pynput.mouse import Listener
 from PyQt5 import QtCore
-from PyQt5.QtCore import QDir, QSettings, QFileInfo, QCoreApplication, QTimer
+from PyQt5.QtCore import QDir, QSettings, QFileInfo, QCoreApplication, QTimer, QRegExp
+from PyQt5.QtGui import QRegExpValidator
 from PyQt5.QtWidgets import qApp, QMessageBox, QMainWindow, QSystemTrayIcon, QAction, QMenu
 
 import sys,os 
@@ -50,22 +51,28 @@ def timeoutEvent():
 def pushButtonClickedEvent(win):
     ui = win.ui
     
+    leText = ui.lineEdit.text()
+    if leText == '':
+        QMessageBox.warning(win, "提示", "请输入云同步间隔时间!") 
+        return
+
+    global interval
+    interval = float(leText)
+
+    if not ((interval > 0.1 and interval < 0.9 ) or (interval > 0 and interval < 10)):
+        QMessageBox.warning(win, "提示", "请输入合法数据!") 
+        return
+
     ui.lineEdit.setEnabled(False)
     ui.pushButton.setEnabled(False)
     ui.pushButton.setText("运行中..")
     ui.pushButton_3.setEnabled(False)
     win.setWindowIcon(QIcon(r":/img/icon_on.png"))
 
-    global interval
-    interval = int(ui.lineEdit.text())
-
     performOperations(pos[0], pos[1], pos[2])
     win.timer_.start(int(interval*_MILISECONDS_TO_HOUR))
 
     print("开始自动云同步...")
-
-    # 将程序显示到托盘
-    # QTimer.singleShot(1000000, lambda : win.setWindowState(QtCore.Qt.WindowMinimized))  
 
 def pushButton_2ClickedEvent(win):
     ui = win.ui
@@ -176,12 +183,18 @@ class MainWindow(QMainWindow):
 
         self.setWindowIcon(QIcon(r":/img/icon_off.png"))
 
+        # 限制lineEdit编辑框只能输入字符.和数字
+        validator = QRegExpValidator(self)
+        validator.setRegExp(QRegExp("([1-9])|(0.[1-9])"))
+        self.ui.lineEdit.setValidator(validator)
+        self.ui.lineEdit.setPlaceholderText("设置范围：0.1h~9h")
+        self.ui.lineEdit.setText(str(interval))
+
         self.ui.pushButton.clicked.connect(lambda: pushButtonClickedEvent(self))
         self.ui.pushButton_2.clicked.connect(lambda: pushButton_2ClickedEvent(self))
         self.ui.pushButton.setEnabled(False)
         self.ui.pushButton_2.setEnabled(False)
         self.ui.pushButton_3.clicked.connect(lambda: pushButton_3ClickedEvent(self))
-        self.ui.lineEdit.setText(str(interval))
         self.ui.checkBox.setChecked(True)
         self.ui.checkBox.stateChanged.connect(lambda:checkBoxStateChangedEvent(self))
 
@@ -201,8 +214,7 @@ class MainWindow(QMainWindow):
         """
         重写窗口关闭事件
         """
-        print("closeEvent")
-        # self.trayIcon_.hide()
+        self.trayIcon_.hide()
 
     def trayClick(self, reason):
         """
