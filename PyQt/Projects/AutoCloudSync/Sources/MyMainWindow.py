@@ -63,8 +63,8 @@ def pushButtonClickedEvent(win):
     win.timer_.start(int(interval*_MILISECONDS_TO_HOUR))
 
     print("开始自动云同步...")
+
     # 将程序显示到托盘
-    
     # QTimer.singleShot(1000000, lambda : win.setWindowState(QtCore.Qt.WindowMinimized))  
 
 def pushButton_2ClickedEvent(win):
@@ -217,7 +217,10 @@ class MainWindow(QMainWindow):
         """
         重写窗口状态改变函数
         """
-        # print(event.type())
+        def _showTrayIconMesg():
+            self.trayIcon_.setToolTip("桌面日历自动云同步")
+            self.trayIcon_.showMessage("桌面日历自动云同步","已最小化至托盘")
+        
         if event.type() == QtCore.QEvent.WindowStateChange:
             if self.windowState() & QtCore.Qt.WindowMinimized:
                 event.ignore()
@@ -225,17 +228,15 @@ class MainWindow(QMainWindow):
                 quitAction = QAction(u"退出", self, triggered = qApp.quit)
                 menu = QMenu()
                 menu.addAction(quitAction)
+                self.trayIcon_.setContextMenu(menu)
 
                 self.trayIcon_.setIcon(QIcon(r":/img/icon_off.png"))
 
                 if not self.ui.pushButton.isEnabled():
                     self.trayIcon_.setIcon(QIcon(r":/img/icon_on.png"))
 
-                self.trayIcon_.setToolTip("桌面日历自动云同步")
-                self.trayIcon_.showMessage("桌面日历自动云同步","已最小化至托盘")
-                self.trayIcon_.setContextMenu(menu)
+                QTimer.singleShot(600, lambda : _showTrayIconMesg())       
                 
                 self.trayIcon_.show()
-
                 self.hide()
-                return
+                
