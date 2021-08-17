@@ -8,7 +8,7 @@ import time
 from pynput.mouse import Listener
 from PyQt5 import QtCore
 from PyQt5.QtCore import QDir, QSettings, QFileInfo, QCoreApplication, QTimer
-from PyQt5.QtWidgets import QMessageBox, QMainWindow, QSystemTrayIcon
+from PyQt5.QtWidgets import qApp, QMessageBox, QMainWindow, QSystemTrayIcon, QAction, QMenu
 
 import sys,os 
 path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -21,7 +21,6 @@ _MILISECONDS_TO_HOUR = 1000*3600     # 毫秒转为小时 3600*1000
 clickTimes = 0      # 记录点击次数用于终止鼠标监听事件
 pos = []            # 记录云同步时鼠标三次点击的位置
 interval = 3        # 设置云同步间隔时间,默认为3个小时
-isClicked = False   # 记录button是否被点击过
 
 def performOperations(pos1, pos2, pos3):
     # pos1: "云同步"按钮的位置
@@ -48,7 +47,9 @@ def timeoutEvent():
     performOperations(pos[0], pos[1], pos[2])
     print("Done!")
 
-def pushButtonClickedEvent(ui, win):
+def pushButtonClickedEvent(win):
+    ui = win.ui
+    
     ui.lineEdit.setEnabled(False)
     ui.pushButton.setEnabled(False)
     ui.pushButton.setText("运行中..")
@@ -63,10 +64,11 @@ def pushButtonClickedEvent(ui, win):
 
     print("开始自动云同步...")
     # 将程序显示到托盘
-    # win.setWindowFlags(QtCore.Qt.SplashScreen | QtCore.Qt.FramelessWindowHint)
-    win.showMinimized()
     
-def pushButton_2ClickedEvent(ui, win):
+    # QTimer.singleShot(1000000, lambda : win.setWindowState(QtCore.Qt.WindowMinimized))  
+
+def pushButton_2ClickedEvent(win):
+    ui = win.ui
     # 关闭云同步
     win.timer_.stop()               # 停止云同步运行
 
@@ -78,7 +80,8 @@ def pushButton_2ClickedEvent(ui, win):
 
     print("结束执行")
 
-def pushButton_3ClickedEvent(ui, win):
+def pushButton_3ClickedEvent(win):
+    ui = win.ui
     # 初始化云同步步骤的按钮的坐标位置
     def on_click(x, y, button, pressed):
         global clickTimes
@@ -148,39 +151,41 @@ class MainWindow(QMainWindow):
 
         self.timer_ = QTimer(self)
 
-        self.trayIcon_ = QSystemTrayIcon()
+        # 系统托盘
+        self.trayIcon_ = QSystemTrayIcon()      
+        self.trayIcon_.activated.connect(self.trayClick)
 
         # 界面的UI初始化,这部分代码由QT编译器自动生成，不用动
-        ui = Ui_MyMainWindow.Ui_MainWindow()
-        ui.setupUi(self)
+        self.ui = Ui_MyMainWindow.Ui_MainWindow()
+        self.ui.setupUi(self)
 
         # 界面的一些设置
         self.windowSetting()
 
         # 控件的事件绑定
-        self.widgetsSetting(ui)
+        self.widgetsSetting()
 
         # 加载保存的按钮坐标
-        self.loadSettings(ui)
+        self.loadSettings()
 
     def windowSetting(self):
         self.setFixedSize(self.width(), self.height())
 
-    def widgetsSetting(self, ui):
+    def widgetsSetting(self):
         self.timer_.timeout.connect(lambda: timeoutEvent())
 
         self.setWindowIcon(QIcon(r":/img/icon_off.png"))
 
-        ui.pushButton.clicked.connect(lambda: pushButtonClickedEvent(ui, self))
-        ui.pushButton_2.clicked.connect(lambda: pushButton_2ClickedEvent(ui, self))
-        ui.pushButton.setEnabled(False)
-        ui.pushButton_2.setEnabled(False)
-        ui.pushButton_3.clicked.connect(lambda: pushButton_3ClickedEvent(ui, self))
-        ui.lineEdit.setText(str(interval))
-        ui.checkBox.setChecked(True)
-        ui.checkBox.stateChanged.connect(lambda:checkBoxStateChangedEvent(ui))
+        self.ui.pushButton.clicked.connect(lambda: pushButtonClickedEvent(self))
+        self.ui.pushButton_2.clicked.connect(lambda: pushButton_2ClickedEvent(self))
+        self.ui.pushButton.setEnabled(False)
+        self.ui.pushButton_2.setEnabled(False)
+        self.ui.pushButton_3.clicked.connect(lambda: pushButton_3ClickedEvent(self))
+        self.ui.lineEdit.setText(str(interval))
+        self.ui.checkBox.setChecked(True)
+        self.ui.checkBox.stateChanged.connect(lambda:checkBoxStateChangedEvent(self))
 
-    def loadSettings(self, ui):
+    def loadSettings(self):
         settings = QSettings("HXZZ", "AutoCloudSync")
         settings.beginGroup("Button_Positions")
 
@@ -189,5 +194,48 @@ class MainWindow(QMainWindow):
         print(pos)
 
         if pos is not None:
-            ui.pushButton.setEnabled(True)
-            ui.pushButton_2.setEnabled(True)
+            self.ui.pushButton.setEnabled(True)
+            self.ui.pushButton_2.setEnabled(True)
+
+    def closeEvent(self, QCloseEvent):    
+        """
+        重写窗口关闭事件
+        """
+        print("closeEvent")
+        # self.trayIcon_.hide()
+
+    def trayClick(self, reason):
+        """
+        托盘点击响应事件
+        """
+        print("trayClick")
+        if reason == QSystemTrayIcon.Trigger:
+            self.showNormal()
+            self.activateWindow()
+
+    def changeEvent(self, event):
+        """
+        重写窗口状态改变函数
+        """
+        # print(event.type())
+        if event.type() == QtCore.QEvent.WindowStateChange:
+            if self.windowState() & QtCore.Qt.WindowMinimized:
+                event.ignore()
+                print("窗口最小化")
+                quitAction = QAction(u"退出", self, triggered = qApp.quit)
+                menu = QMenu()
+                menu.addAction(quitAction)
+
+                self.trayIcon_.setIcon(QIcon(r":/img/icon_off.png"))
+
+                if not self.ui.pushButton.isEnabled():
+                    self.trayIcon_.setIcon(QIcon(r":/img/icon_on.png"))
+
+                self.trayIcon_.setToolTip("桌面日历自动云同步")
+                self.trayIcon_.showMessage("桌面日历自动云同步","已最小化至托盘")
+                self.trayIcon_.setContextMenu(menu)
+                
+                self.trayIcon_.show()
+
+                self.hide()
+                return
