@@ -112,7 +112,6 @@ class SetTimeDlg(QWidget):
         self.lcd.display(self.seconds2time(self.saveValue[3]))
         self.setSpinBoxEnabled(False)
 
-
     def initUI(self):
         self.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
         self.setWindowTitle("设置关机时间")
@@ -471,7 +470,7 @@ if __name__ == '__main__':
         thread1 = WeatherThread()
         thread1.weather_signal.connect(login.showWeather)
         thread1.start()
-        login.setWindowIcon(QIcon(r"D:\Desktop\PyQt learning\Auto_Login\icons\net_success.png"))
+        login.setWindowIcon(QIcon(r"D:\\Desktop\\PyQt learning\\Auto_Login\\icons\\net_success.png"))
         login.widgetEnable(True)
         login.login_btn.setText("注销")
         login.login_btn.setStyleSheet("color:white;background:red")

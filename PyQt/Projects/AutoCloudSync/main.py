@@ -5,6 +5,8 @@ from Sources import MyMainWindow
 if __name__ == "__main__":
     app = QApplication(sys.argv)
 
+    print(sys.argv[0])
+
     window = MyMainWindow.MainWindow()
     window.show()
 
