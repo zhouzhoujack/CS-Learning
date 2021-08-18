@@ -8,9 +8,9 @@ import pyautogui as pg
 import time
 from pynput.mouse import Listener
 from PyQt5 import QtCore
-from PyQt5.QtCore import QDir, QSettings, QFileInfo, QCoreApplication, QTimer, QRegExp
+from PyQt5.QtCore import QSettings, QTimer, QRegExp
 from PyQt5.QtGui import QRegExpValidator
-from PyQt5.QtWidgets import qApp, QMessageBox, QMainWindow, QSystemTrayIcon, QAction, QMenu, QToolTip, QLCDNumber
+from PyQt5.QtWidgets import qApp, QMessageBox, QMainWindow, QSystemTrayIcon, QAction, QMenu, QLCDNumber
 
 import win32api
 import win32con, winreg
@@ -20,7 +20,6 @@ path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(path) 
 from Forms import Ui_MyMainWindow
 from Resources import res_rc
-
 
 _SECONDS_OF_HOUR = 3600     # 1小时3600秒
 
