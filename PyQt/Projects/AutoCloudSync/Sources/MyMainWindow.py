@@ -49,7 +49,7 @@ def performOperations(pos1, pos2, pos3):
     pg.hotkey('win', 'd') 
     pg.moveTo(pos1[0], pos1[1], duration=0.0)
     pg.doubleClick()
-    time.sleep(0.01)
+    time.sleep(0.1)
     pg.moveTo(pos2[0], pos2[1], duration=0.0)
     pg.doubleClick()
     pg.moveTo(pos3[0], pos3[1], duration=0.1)
@@ -86,6 +86,12 @@ def pushButtonClickedEvent(win):
         QMessageBox.warning(win, "提示", "请输入合法数据!") 
         return
 
+    # 将button的坐标保存到默认设置中，以便下次重启使用
+    settings = QSettings("HXZZ", "AutoCloudSync")
+    settings.beginGroup("DefaultParams")
+    settings.setValue("interval", interval)
+    settings.endGroup()
+
     # 用户自定义执行的间隔时间(s)
     win.duration = win.resetDuration(interval)
 
@@ -104,8 +110,9 @@ def pushButton_2ClickedEvent(win):
     ui = win.ui
 
     # 关闭云同步
-    win.timer_.stop()               # 停止云同步运行
-    win.duration = win.resetDuration(interval)
+    if win.timer_.isActive():
+        win.timer_.stop()               # 停止云同步运行
+        win.duration = win.resetDuration(interval)
 
     ui.lcdNumber.display("00:00:00")
     ui.lineEdit.setEnabled(True)
@@ -148,7 +155,7 @@ def pushButton_3ClickedEvent(win):
 
     # 将button的坐标保存到默认设置中，以便下次重启使用
     settings = QSettings("HXZZ", "AutoCloudSync")
-    settings.beginGroup("Button_Positions")
+    settings.beginGroup("DefaultParams")
     settings.setValue("pos", pos)
     settings.endGroup()
 
@@ -265,14 +272,14 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MyMainWindow.Ui_MainWindow()
         self.ui.setupUi(self)
 
+        # 加载保存的按钮坐标和用户自定义的时间间隔
+        self.loadSettings()
+
         # 界面的一些设置
         self.windowSetting()
 
-        # 控件的事件绑定
+        # 控件的事件绑定和状态检测
         self.widgetsSetting()
-
-        # 加载保存的按钮坐标
-        self.loadSettings()
 
     def windowSetting(self):
         self.setFixedSize(self.width(), self.height())
@@ -292,6 +299,9 @@ class MainWindow(QMainWindow):
         self.ui.pushButton.setEnabled(False)
         self.ui.pushButton_2.setEnabled(False)
         self.ui.pushButton_3.clicked.connect(lambda: pushButton_3ClickedEvent(self))
+        if len(pos) == 3:
+            self.ui.pushButton.setEnabled(True)
+            self.ui.pushButton_2.setEnabled(True)
 
         flag = checkKey()    # 这里检测一下程序自启动的注册表是否已经修改
         self.ui.checkBox.setChecked(flag)
@@ -304,15 +314,14 @@ class MainWindow(QMainWindow):
 
     def loadSettings(self):
         settings = QSettings("HXZZ", "AutoCloudSync")
-        settings.beginGroup("Button_Positions")
+        settings.beginGroup("DefaultParams")
 
-        global pos
+        global pos, interval
         pos = settings.value("pos")
-        print(pos)
+        interval = settings.value("interval")
 
-        if pos is not None:
-            self.ui.pushButton.setEnabled(True)
-            self.ui.pushButton_2.setEnabled(True)
+        print(interval)
+        print(pos)
 
     def closeEvent(self, QCloseEvent):    
         """
@@ -361,8 +370,8 @@ class MainWindow(QMainWindow):
                 if not self.ui.pushButton.isEnabled():
                     self.trayIcon_.setIcon(QIcon(r":/img/icon_on.png"))
 
-                QTimer.singleShot(600, lambda : _showTrayIconMesg())       
+                QTimer.singleShot(1000, lambda : _showTrayIconMesg())       
                 
-                self.trayIcon_.show()
                 self.hide()
+                self.trayIcon_.show()
                 
