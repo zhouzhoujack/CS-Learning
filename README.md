@@ -2,6 +2,7 @@
 
 ## PyQt
 ### BasicsTutorial
+自学的代码
 ### OfficalExamples
 [PyQt5 官方示例代码](https://github.com/PyQt5/Examples)
 
