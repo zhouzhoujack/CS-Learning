@@ -1,8 +1,7 @@
 """
 对MainWindow的主界面进行详细设置
 """
-from typing import overload
-from typing_extensions import IntVar
+
 from PyQt5.QtGui import QIcon
 import pyautogui as pg
 import time
@@ -312,12 +311,17 @@ class MainWindow(QMainWindow):
         self.ui.lcdNumber.setSegmentStyle(QLCDNumber.Flat)
 
     def loadSettings(self):
+        # 用户第一次进程序，未保存任何设置参数
         settings = QSettings("HXZZ", "AutoCloudSync")
         settings.beginGroup("DefaultParams")
 
         global pos, interval
-        pos = settings.value("pos")
-        interval = settings.value("interval")
+        _pos = settings.value("pos")
+        _interval = settings.value("interval")
+        if _pos is not None:
+            pos = _pos
+        if _interval is not None:
+            interval = _interval
 
         print(interval)
         print(pos)
