@@ -46,7 +46,6 @@ from PyQt5.QtWidgets import QGraphicsObject
 
 from colors import Colors
 
-
 class SharedImage(object):
     def __init__(self):
         self.refCount = 0
@@ -54,7 +53,6 @@ class SharedImage(object):
         self.pixmap = None
         self.transform = QTransform()
         self.unscaledBoundingRect = QRectF()
-
 
 class DemoItem(QGraphicsObject):
     _sharedImageHash = {}

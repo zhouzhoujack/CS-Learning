@@ -74,7 +74,7 @@ class Window(QDialog):
             self.showMessage()
 
     def showMessage(self):
-        print(self.typeComboBox.currentIndex())
+        # print(self.typeComboBox.currentIndex())
         print(self.typeComboBox.itemData(self.typeComboBox.currentIndex()))
 
         icon = QSystemTrayIcon.MessageIcon(

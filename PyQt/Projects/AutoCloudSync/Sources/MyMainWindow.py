@@ -2,12 +2,13 @@
 对MainWindow的主界面进行详细设置
 """
 
+from threading import Event
 from PyQt5.QtGui import QIcon
 import pyautogui as pg
 import time
 from pynput.mouse import Listener
 from PyQt5 import QtCore
-from PyQt5.QtCore import QSettings, QTimer, QRegExp
+from PyQt5.QtCore import QEvent, QSettings, QTimer, QRegExp, QObject
 from PyQt5.QtGui import QRegExpValidator
 from PyQt5.QtWidgets import qApp, QMessageBox, QMainWindow, QSystemTrayIcon, QAction, QMenu, QLCDNumber
 
@@ -62,12 +63,13 @@ def refreshTimerSlot(win):
     ui = win.ui
     win.duration -= 1   # 每s触发并减1
 
-    formatTime = seconds2time(win.duration)
-    ui.lcdNumber.display(formatTime)
-
     if win.duration == 0:
         performOperations(pos[0], pos[1], pos[2])
         win.duration = win.resetDuration(interval)
+
+    formatTime = seconds2time(win.duration)
+    ui.lcdNumber.display(formatTime)
+    win.trayIcon_.setToolTip(formatTime)
 
 def pushButtonClickedEvent(win):
     ui = win.ui
@@ -112,6 +114,7 @@ def pushButton_2ClickedEvent(win):
         win.timer_.stop()               # 停止云同步运行
         win.duration = win.resetDuration(interval)
 
+    win.trayIcon_.setToolTip("桌面日历自动云同步")
     ui.lcdNumber.display("00:00:00")
     ui.lineEdit.setEnabled(True)
     ui.pushButton.setEnabled(True)
@@ -249,6 +252,15 @@ def AutoRun(switch="open",
         except:
             print('删除失败,未知错误！')
 
+class MouseHoverEvent(QObject):
+    def __init__(self, parent):
+        super(MouseHoverEvent, self).__init__(parent)  
+        
+    def eventFilter(self, source: 'QObject', event: 'QEvent') -> bool:
+        print(event.type())
+        print("hello")
+        return super().eventFilter(source, event)
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
@@ -262,9 +274,11 @@ class MainWindow(QMainWindow):
         self.timer_.timeout.connect(lambda: refreshTimerSlot(self))
 
         # 系统托盘
-        self.trayIcon_ = QSystemTrayIcon()     
+        self.trayIcon_ = QSystemTrayIcon()
         self.trayIcon_.activated.connect(self.trayClick)
-        self.trayIcon_.setToolTip("xxx")
+        self.trayIcon_.installEventFilter(MouseHoverEvent(self.trayIcon_))
+
+        self.trayIcon_.setToolTip("桌面日历自动云同步")
 
         # 界面的UI初始化,这部分代码由QT编译器自动生成，不用动
         self.ui = Ui_MyMainWindow.Ui_MainWindow()
@@ -355,7 +369,7 @@ class MainWindow(QMainWindow):
         重写窗口状态改变函数
         """
         def _showTrayIconMesg():
-            self.trayIcon_.setToolTip("桌面日历自动云同步")
+            # self.trayIcon_.setToolTip("桌面日历自动云同步")
             self.trayIcon_.showMessage("桌面日历自动云同步","已最小化至托盘")
         
         if event.type() == QtCore.QEvent.WindowStateChange:

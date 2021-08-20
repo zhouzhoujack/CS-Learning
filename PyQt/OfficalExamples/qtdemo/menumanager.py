@@ -258,9 +258,7 @@ class MenuManager(QObject):
         if sys.platform == 'win32':
             # Make sure it finds the DLLs on Windows.
             env = QProcessEnvironment.systemEnvironment()
-            env.insert('PATH',
-                    QLibraryInfo.location(QLibraryInfo.BinariesPath) + ';' +
-                            env.value('PATH'))
+            env.insert('PATH', QLibraryInfo.location(QLibraryInfo.BinariesPath) + ';' + env.value('PATH'))
             process.setProcessEnvironment(env)
 
         if self.info[name]['changedirectory'] != 'false':
@@ -755,21 +753,19 @@ class MenuManager(QObject):
         xOffset = 15.0
         yOffset = 450.0
 
-        self.upButton = TextButton("", TextButton.LEFT, MenuManager.UP,
-                self.window.mainSceneRoot, TextButton.UP)
+        self.upButton = TextButton("", TextButton.LEFT, MenuManager.UP, self.window.mainSceneRoot, TextButton.UP)
         self.upButton.prepare()
         self.upButton.setPos(xOffset, yOffset)
         self.upButton.setState(TextButton.DISABLED)
 
-        self.downButton = TextButton("", TextButton.LEFT, MenuManager.DOWN,
-                self.window.mainSceneRoot, TextButton.DOWN)
+        self.downButton = TextButton("", TextButton.LEFT, MenuManager.DOWN, self.window.mainSceneRoot, TextButton.DOWN)
         self.downButton.prepare()
         self.downButton.setPos(xOffset + 10 + self.downButton.sceneBoundingRect().width(), yOffset)
 
         movieShake = self.score.insertMovie('upndown -shake')
 
-        shakeAnim = DemoItemAnimation(self.upButton,
-                DemoItemAnimation.ANIM_UNSPECIFIED)
+        shakeAnim = DemoItemAnimation(self.upButton, DemoItemAnimation.ANIM_UNSPECIFIED)
+        
         shakeAnim.setDuration(650)
         shakeAnim.setStartValue(self.upButton.pos())
         shakeAnim.setKeyValueAt(0.60, self.upButton.pos())
@@ -779,8 +775,7 @@ class MenuManager(QObject):
         shakeAnim.setEndValue(self.upButton.pos())
         movieShake.append(shakeAnim)
 
-        shakeAnim = DemoItemAnimation(self.downButton,
-                DemoItemAnimation.ANIM_UNSPECIFIED)
+        shakeAnim = DemoItemAnimation(self.downButton, DemoItemAnimation.ANIM_UNSPECIFIED)
         shakeAnim.setDuration(650)
         shakeAnim.setStartValue(self.downButton.pos())
         shakeAnim.setKeyValueAt(0.60, self.downButton.pos())

@@ -52,7 +52,6 @@ from demotextitem import DemoTextItem
 from headingitem import HeadingItem
 from imageitem import ImageItem
 
-
 class ExampleContent(DemoItem):
     def __init__(self, name, parent=None):
         super(ExampleContent, self).__init__(parent)

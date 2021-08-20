@@ -90,7 +90,6 @@ BirthdayParty {
 }
 '''
 
-
 class ShoeDescription(QObject):
     def __init__(self, parent=None):
         super(ShoeDescription, self).__init__(parent)
@@ -142,7 +141,6 @@ class ShoeDescription(QObject):
             self._price = price
             self.shoeChanged.emit()
 
-
 class Person(QObject):
     def __init__(self, parent=None):
         super(Person, self).__init__(parent)
@@ -166,14 +164,11 @@ class Person(QObject):
     def shoe(self):
         return self._shoe
 
-
 class Boy(Person):
     pass
 
-
 class Girl(Person):
     pass
-
 
 class BirthdayPartyAttached(QObject):
     def __init__(self, parent):
@@ -192,7 +187,6 @@ class BirthdayPartyAttached(QObject):
         if self._rsvp != rsvp:
             self._rsvp = rsvp
             self.rsvpChanged.emit()
-
 
 class BirthdayParty(QObject):
     Q_CLASSINFO('DefaultProperty', 'guests')
@@ -231,7 +225,6 @@ class BirthdayParty(QObject):
 
     def startParty(self):
         self.partyStarted.emit(QTime.currentTime())
-
 
 class HappyBirthdaySong(QObject, QQmlPropertyValueSource):
     def __init__(self, parent=None):
@@ -279,12 +272,10 @@ class HappyBirthdaySong(QObject, QQmlPropertyValueSource):
         else:
             QCoreApplication.instance().quit()
 
-
 app = QCoreApplication(sys.argv)
 
 qmlRegisterType(BirthdayPartyAttached)
-qmlRegisterType(BirthdayParty, "People", 1, 0, "BirthdayParty",
-        attachedProperties=BirthdayPartyAttached)
+qmlRegisterType(BirthdayParty, "People", 1, 0, "BirthdayParty", attachedProperties=BirthdayPartyAttached)
 qmlRegisterType(HappyBirthdaySong, "People", 1, 0, "HappyBirthdaySong")
 qmlRegisterType(ShoeDescription)
 qmlRegisterType(Person)
