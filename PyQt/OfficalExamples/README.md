@@ -13,3 +13,5 @@
 ## pyuic
 - load_ui2,compile-on-the-fly 不需要编译.ui文件为.py文件，以纯.ui文件形式加载界面设置
 
+## dialogs
+- standarddialogs  各种对话框汇总，包括输入对话框、颜色选择对话框、字体选择对话框、文件对话框、消息提示对话框

@@ -187,8 +187,7 @@ class Dialog(QDialog):
         self.setWindowTitle("Standard Dialogs")
 
     def setInteger(self):    
-        i, ok = QInputDialog.getInt(self, "QInputDialog.getInt()",
-                "Percentage:", 25, 0, 100, 1)
+        i, ok = QInputDialog.getInt(self, "QInputDialog.getInt()", "Percentage:", 25, 0, 100, 1)
         if ok:
             self.integerLabel.setText("%d%%" % i)
 
@@ -313,7 +312,6 @@ class Dialog(QDialog):
                 "QErrorMessage.showMessage() is called with the same message.")
         self.errorLabel.setText("If the box is unchecked, the message won't "
                 "appear again.")
-
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
