@@ -1,44 +1,3 @@
-#############################################################################
-##
-## Copyright (C) 2013 Riverbank Computing Limited.
-## Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-## All rights reserved.
-##
-## This file is part of the examples of PyQt.
-##
-## $QT_BEGIN_LICENSE:LGPL$
-## Commercial Usage
-## Licensees holding valid Qt Commercial licenses may use this file in
-## accordance with the Qt Commercial License Agreement provided with the
-## Software or, alternatively, in accordance with the terms contained in
-## a written agreement between you and Nokia.
-##
-## GNU Lesser General Public License Usage
-## Alternatively, this file may be used under the terms of the GNU Lesser
-## General Public License version 2.1 as published by the Free Software
-## Foundation and appearing in the file LICENSE.LGPL included in the
-## packaging of this file.  Please review the following information to
-## ensure the GNU Lesser General Public License version 2.1 requirements
-## will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
-##
-## In addition, as a special exception, Nokia gives you certain additional
-## rights.  These rights are described in the Nokia Qt LGPL Exception
-## version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
-##
-## GNU General Public License Usage
-## Alternatively, this file may be used under the terms of the GNU
-## General Public License version 3.0 as published by the Free Software
-## Foundation and appearing in the file LICENSE.GPL included in the
-## packaging of this file.  Please review the following information to
-## ensure the GNU General Public License version 3.0 requirements will be
-## met: http://www.gnu.org/copyleft/gpl.html.
-##
-## If you have questions regarding the use of this file, please contact
-## Nokia at qt-info@nokia.com.
-## $QT_END_LICENSE$
-##
-#############################################################################
-
 
 import sys
 from xml.dom.minidom import parseString
@@ -56,6 +15,9 @@ from menucontent import MenuContentItem
 from score import Score
 from textbutton import TextButton
 
+"""
+左边菜单栏的设置
+"""
 
 class MenuManager(QObject):
     ROOT, MENU1, MENU2, LAUNCH, DOCUMENTATION, QUIT, FULLSCREEN, UP, DOWN, \
@@ -87,6 +49,9 @@ class MenuManager(QObject):
         self.currentMenuCode = -1
         self.readXmlDocument()
 
+    """
+    防止反复实例化
+    """
     @classmethod
     def instance(cls):
         if cls.pInstance is None:
@@ -98,6 +63,9 @@ class MenuManager(QObject):
         return QByteArray()
 
     def readXmlDocument(self):
+        """
+        读取Xml文档保存的目录设置,并将其解析
+        """
         root = QFileInfo(__file__).absolutePath()
         xml_file = QFile(root + '/examples.xml')
         xml_file.open(QFile.ReadOnly | QFile.Text)
@@ -109,23 +77,25 @@ class MenuManager(QObject):
     def itemSelected(self, userCode, menuName):
         if userCode == MenuManager.LAUNCH:
             self.launchExample(self.currentInfo)
+
         elif userCode == MenuManager.LAUNCH_QML:
             self.launchQml(self.currentInfo)
+
         elif userCode == MenuManager.DOCUMENTATION:
             self.showDocInAssistant(self.currentInfo)
+
         elif userCode == MenuManager.QUIT:
             QApplication.quit()
+
         elif userCode == MenuManager.FULLSCREEN:
             self.window.toggleFullscreen()
+
         elif userCode == MenuManager.ROOT:
             # Out.
-            self.score.queueMovie(self.currentMenu + ' -out', Score.FROM_START,
-                    Score.LOCK_ITEMS)
-            self.score.queueMovie(self.currentMenuButtons + ' -out',
-                    Score.FROM_START, Score.LOCK_ITEMS)
+            self.score.queueMovie(self.currentMenu + ' -out', Score.FROM_START, Score.LOCK_ITEMS)
+            self.score.queueMovie(self.currentMenuButtons + ' -out',  Score.FROM_START, Score.LOCK_ITEMS)
             self.score.queueMovie(self.currentInfo + ' -out')
-            self.score.queueMovie(self.currentInfo + ' -buttons -out',
-                    Score.NEW_ANIMATION_ONLY)
+            self.score.queueMovie(self.currentInfo + ' -buttons -out', Score.NEW_ANIMATION_ONLY)
             self.score.queueMovie('back -out', Score.ONLY_IF_VISIBLE)
 
             # Book-keeping.
@@ -136,10 +106,8 @@ class MenuManager(QObject):
 
             # In.
             self.score.queueMovie('upndown -shake')
-            self.score.queueMovie(self.currentMenu, Score.FROM_START,
-                    Score.UNLOCK_ITEMS)
-            self.score.queueMovie(self.currentMenuButtons, Score.FROM_START,
-                    Score.UNLOCK_ITEMS)
+            self.score.queueMovie(self.currentMenu, Score.FROM_START, Score.UNLOCK_ITEMS)
+            self.score.queueMovie(self.currentMenuButtons, Score.FROM_START, Score.UNLOCK_ITEMS)
             self.score.queueMovie(self.currentInfo)
 
             if not Colors.noTicker:
@@ -147,6 +115,7 @@ class MenuManager(QObject):
                 self.tickerInAnim.setStartDelay(2000)
                 self.ticker.useGuideQt()
                 self.score.queueMovie('ticker', Score.NEW_ANIMATION_ONLY)
+
         elif userCode == MenuManager.MENU1:
             # Out.
             self.score.queueMovie(self.currentMenu + ' -out', Score.FROM_START,

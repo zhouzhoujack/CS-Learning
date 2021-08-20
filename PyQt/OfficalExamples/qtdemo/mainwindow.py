@@ -113,8 +113,7 @@ class MainWindow(QGraphicsView):
     def start(self):
         self.switchTimerOnOff(True)
         self.demoStartTime.restart()
-        MenuManager.instance().itemSelected(MenuManager.ROOT,
-                Colors.rootMenuName)
+        MenuManager.instance().itemSelected(MenuManager.ROOT, Colors.rootMenuName)
         Colors.debug("- starting demo")
 
     def enableMask(self, enable):
@@ -244,8 +243,10 @@ class MainWindow(QGraphicsView):
         self.companyLogo = ImageItem(
                 QImage(self.imagesDir + '/trolltech-logo.png'),
                 1000, 1000, None, True, 0.5)
+
         self.qtLogo = ImageItem(QImage(self.imagesDir + '/qtlogo_small.png'),
                 1000, 1000, None, True, 0.5)
+
         self.companyLogo.setZValue(100)
         self.qtLogo.setZValue(100)
         self.pausedLabel = DemoTextItem("PAUSED", Colors.buttonFont(),
