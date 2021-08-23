@@ -35,5 +35,13 @@
 <img src="https://doc.qt.io/qtforpython-5/_images/digitalclock-example.png">
 </div>
 
+- lineedits 输入框的用法示例
+
+- [scribble](https://doc.qt.io/qtforpython-5/overviews/qtwidgets-widgets-scribble-example.html?highlight=scribble) 绘图工具，主要通过重新实现鼠标的事件来实现
+
+<div align=center>
+<img src="https://doc.qt.io/qtforpython-5/_images/scribble-example.png">
+</div>
+
 - caclulator 计算器
 - 
