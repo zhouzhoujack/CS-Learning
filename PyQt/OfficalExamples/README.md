@@ -28,6 +28,21 @@
 ## dialogs
 - standarddialogs  各种对话框汇总，包括输入对话框、颜色选择对话框、字体选择对话框、文件对话框、消息提示对话框
 
+- [tabdialog](https://doc.qt.io/qtforpython-5/overviews/qtwidgets-dialogs-tabdialog-example.html?highlight=tabdialog) 选项对话框
+<div align=center>
+<img src="https://doc.qt.io/qtforpython-5/_images/tabdialog-example.png">
+</div>
+
+- [classwizard](https://doc.qt.io/qtforpython-5/overviews/qtwidgets-dialogs-classwizard-example.html?highlight=classwizard) 类向导对话框
+<div align=center>
+<img src="https://doc.qt.io/qtforpython-5/_images/classwizard.png">
+</div>
+
+- [findfiles](https://doc.qt.io/qtforpython-5/overviews/qtwidgets-dialogs-findfiles-example.html#find-files-example) 搜索对话框，搜索结果展示
+<div align=center>
+<img src="https://doc.qt.io/qtforpython-5/_images/findfiles-example.png">
+</div>
+
 ## widgets
 - [analogclock](https://doc.qt.io/qtforpython-5/overviews/qtgui-analogclock-example.html?highlight=analogclock) 利用QPainter绘制的时钟
 
@@ -56,4 +71,18 @@
 </div>
 
 - caclulator 计算器
-- 
+  
+## layouts
+- [basiclayouts](https://doc.qt.io/qtforpython-5/overviews/qtwidgets-layouts-basiclayouts-example.html?highlight=layouts) 水平、垂直、网格、表格布局
+
+<div align=center>
+<img src="https://doc.qt.io/qtforpython-5/_images/basiclayouts-example.png">
+</div>
+
+- [borderlayout](https://doc.qt.io/qtforpython-5/overviews/qtwidgets-layouts-borderlayout-example.html?highlight=borderlayout)/[flowlayout](https://doc.qt.io/qtforpython-5/overviews/qtwidgets-layouts-flowlayout-example.html?highlight=flowlayout) 自定义布局
+
+<div align=center>
+<img src="https://doc.qt.io/qtforpython-5/_images/borderlayout-example.png">
+</br>
+<img src="https://doc.qt.io/qtforpython-5/_images/flowlayout-example.png">
+</div>
