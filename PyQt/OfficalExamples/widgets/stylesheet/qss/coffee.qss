@@ -12,7 +12,7 @@ QLineEdit[echoMode="2"] {
 QPushButton {
     background-color: palegoldenrod;
     border-width: 2px;
-    border-color: darkkhaki;
+    border-color: rgb(189, 183, 107);
     border-style: solid;
     border-radius: 5;
     padding: 3px;

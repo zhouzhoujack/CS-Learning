@@ -56,6 +56,7 @@ class MainWindow(QMainWindow):
 
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        
         self.ui.nameLabel.setProperty('class', 'mandatory QLabel')
         self.styleSheetEditor = StyleSheetEditor(self)
         self.statusBar().addWidget(QLabel("Ready"))
