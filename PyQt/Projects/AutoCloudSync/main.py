@@ -10,6 +10,7 @@ if __name__ == "__main__":
     print(os.path.realpath(sys.executable))
 
     window = MyMainWindow.MainWindow()
+    
     window.show()
 
     sys.exit(app.exec_())

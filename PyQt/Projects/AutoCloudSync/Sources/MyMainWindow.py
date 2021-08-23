@@ -332,6 +332,7 @@ class MainWindow(QMainWindow):
         global pos, interval
         _pos = settings.value("pos")
         _interval = settings.value("interval")
+        
         if _pos is not None:
             pos = _pos
         if _interval is not None:
@@ -369,7 +370,6 @@ class MainWindow(QMainWindow):
         重写窗口状态改变函数
         """
         def _showTrayIconMesg():
-            # self.trayIcon_.setToolTip("桌面日历自动云同步")
             self.trayIcon_.showMessage("桌面日历自动云同步","已最小化至托盘")
         
         if event.type() == QtCore.QEvent.WindowStateChange:
