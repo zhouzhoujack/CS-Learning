@@ -2,6 +2,7 @@ import sys,os
 from PyQt5.QtWidgets import qApp, QApplication
 from Sources import MyMainWindow
 
+# 测试
 if __name__ == "__main__":
     app = QApplication(sys.argv)
 
