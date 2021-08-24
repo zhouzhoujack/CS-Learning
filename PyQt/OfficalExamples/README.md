@@ -86,3 +86,10 @@
 </br>
 <img src="https://doc.qt.io/qtforpython-5/_images/flowlayout-example.png">
 </div>
+
+## graphicsview
+- [diagramscene](https://doc.qt.io/qtforpython-5/overviews/qtwidgets-graphicsview-diagramscene-example.html?highlight=diagramscene) 绘图工具，界面布局和设计具有参考价值
+
+<div align=center>
+<img src="https://doc.qt.io/qtforpython-5/_images/diagramscene.png">
+</div>
