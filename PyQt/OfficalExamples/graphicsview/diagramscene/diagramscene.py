@@ -208,10 +208,9 @@ class DiagramItem(QGraphicsPolygonItem):
 class DiagramScene(QGraphicsScene):
     InsertItem, InsertLine, InsertText, MoveItem  = range(4)
 
+    # 自定义信号
     itemInserted = pyqtSignal(DiagramItem)
-
     textInserted = pyqtSignal(QGraphicsTextItem)
-
     itemSelected = pyqtSignal(QGraphicsItem)
 
     def __init__(self, itemMenu, parent=None):
@@ -343,17 +342,22 @@ class MainWindow(QMainWindow):
 
     def __init__(self):
         super(MainWindow, self).__init__()
-
+        
+        # 创建menu的选项并绑定点击触发的事件
         self.createActions()
+        # 创建菜单栏
         self.createMenus()
+        # 创建左边的tool栏
         self.createToolBox()
 
+        # 创建绘制窗口
         self.scene = DiagramScene(self.itemMenu)
         self.scene.setSceneRect(QRectF(0, 0, 5000, 5000))
         self.scene.itemInserted.connect(self.itemInserted)
         self.scene.textInserted.connect(self.textInserted)
         self.scene.itemSelected.connect(self.itemSelected)
 
+        # 创建工具栏
         self.createToolbars()
 
         layout = QHBoxLayout()
@@ -516,12 +520,9 @@ class MainWindow(QMainWindow):
         self.buttonGroup.buttonClicked[int].connect(self.buttonGroupClicked)
 
         layout = QGridLayout()
-        layout.addWidget(self.createCellWidget("Conditional", DiagramItem.Conditional),
-                0, 0)
-        layout.addWidget(self.createCellWidget("Process", DiagramItem.Step), 0,
-                1)
-        layout.addWidget(self.createCellWidget("Input/Output", DiagramItem.Io),
-                1, 0)
+        layout.addWidget(self.createCellWidget("Conditional", DiagramItem.Conditional), 0, 0)
+        layout.addWidget(self.createCellWidget("Process", DiagramItem.Step), 0, 1)
+        layout.addWidget(self.createCellWidget("Input/Output", DiagramItem.Io), 1, 0)
 
         textButton = QToolButton()
         textButton.setCheckable(True)
@@ -621,9 +622,9 @@ class MainWindow(QMainWindow):
         self.editToolBar.addAction(self.toFrontAction)
         self.editToolBar.addAction(self.sendBackAction)
 
+        # 字体选择
         self.fontCombo = QFontComboBox()
         self.fontCombo.currentFontChanged.connect(self.currentFontChanged)
-
         self.fontSizeCombo = QComboBox()
         self.fontSizeCombo.setEditable(True)
         for i in range(8, 30, 2):
@@ -632,6 +633,7 @@ class MainWindow(QMainWindow):
         self.fontSizeCombo.setValidator(validator)
         self.fontSizeCombo.currentIndexChanged.connect(self.fontSizeChanged)
 
+        # 字体颜色选择
         self.fontColorToolButton = QToolButton()
         self.fontColorToolButton.setPopupMode(QToolButton.MenuButtonPopup)
         self.fontColorToolButton.setMenu(
@@ -685,10 +687,10 @@ class MainWindow(QMainWindow):
 
         self.pointerTypeGroup = QButtonGroup()
         self.pointerTypeGroup.addButton(pointerButton, DiagramScene.MoveItem)
-        self.pointerTypeGroup.addButton(linePointerButton,
-                DiagramScene.InsertLine)
+        self.pointerTypeGroup.addButton(linePointerButton, DiagramScene.InsertLine)
         self.pointerTypeGroup.buttonClicked[int].connect(self.pointerGroupClicked)
 
+        # 绘图窗口缩放比例
         self.sceneScaleCombo = QComboBox()
         self.sceneScaleCombo.addItems(["50%", "75%", "100%", "125%", "150%"])
         self.sceneScaleCombo.setCurrentIndex(2)
@@ -741,8 +743,7 @@ class MainWindow(QMainWindow):
 
         colorMenu = QMenu(self)
         for color, name in zip(colors, names):
-            action = QAction(self.createColorIcon(color), name, self,
-                    triggered=slot)
+            action = QAction(self.createColorIcon(color), name, self, triggered=slot)
             action.setData(QColor(color)) 
             colorMenu.addAction(action)
             if color == defaultColor:
