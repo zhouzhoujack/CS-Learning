@@ -126,6 +126,7 @@ class ConfigDialog(QDialog):
     def __init__(self, parent=None):
         super(ConfigDialog, self).__init__(parent)
 
+        # 左边图标按钮
         self.contentsWidget = QListWidget()
         self.contentsWidget.setViewMode(QListView.IconMode)
         self.contentsWidget.setIconSize(QSize(96, 84))
@@ -133,6 +134,7 @@ class ConfigDialog(QDialog):
         self.contentsWidget.setMaximumWidth(128)
         self.contentsWidget.setSpacing(12)
 
+        # 右侧的三个页面布局
         self.pagesWidget = QStackedWidget()
         self.pagesWidget.addWidget(ConfigurationPage())
         self.pagesWidget.addWidget(UpdatePage())
