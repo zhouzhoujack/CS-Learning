@@ -24,8 +24,7 @@ class Arrow(QGraphicsLineItem):
         self.myEndItem = endItem
         self.setFlag(QGraphicsItem.ItemIsSelectable, True)
         self.myColor = Qt.black
-        self.setPen(QPen(self.myColor, 2, Qt.SolidLine, Qt.RoundCap,
-                Qt.RoundJoin))
+        self.setPen(QPen(self.myColor, 2, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
 
     def setColor(self, color):
         self.myColor = color
@@ -95,6 +94,8 @@ class Arrow(QGraphicsLineItem):
 
         painter.drawLine(line)
         painter.drawPolygon(self.arrowHead)
+
+        # 绘制虚线表示选中目标
         if self.isSelected():
             painter.setPen(QPen(myColor, 1, Qt.DashLine))
             myLine = QLineF(line)
@@ -276,11 +277,12 @@ class DiagramScene(QGraphicsScene):
             self.addItem(item)
             item.setPos(mouseEvent.scenePos())
             self.itemInserted.emit(item)
+
         elif self.myMode == self.InsertLine:
-            self.line = QGraphicsLineItem(QLineF(mouseEvent.scenePos(),
-                    mouseEvent.scenePos()))
+            self.line = QGraphicsLineItem(QLineF(mouseEvent.scenePos(), mouseEvent.scenePos()))
             self.line.setPen(QPen(self.myLineColor, 2))
             self.addItem(self.line)
+
         elif self.myMode == self.InsertText:
             textItem = DiagramTextItem()
             textItem.setFont(self.myFont)

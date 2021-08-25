@@ -93,3 +93,16 @@
 <div align=center>
 <img src="https://doc.qt.io/qtforpython-5/_images/diagramscene.png">
 </div>
+
+## itemviews
+- [chart](https://doc.qt.io/qtforpython-5/overviews/qtwidgets-itemviews-chart-example.html?highlight=chart) 图表交互和展示
+
+<div align=center>
+<img src="https://doc.qt.io/qtforpython-5/_images/chart-example.png">
+</div>
+
+- [editabletreemodel](https://doc.qt.io/qtforpython-5/overviews/qtwidgets-itemviews-editabletreemodel-example.html?highlight=editable) 可实现编辑的树形图表
+
+<div align=center>
+<img src="https://doc.qt.io/qtforpython-5/_images/itemviews-editabletreemodel.png">
+</div>
