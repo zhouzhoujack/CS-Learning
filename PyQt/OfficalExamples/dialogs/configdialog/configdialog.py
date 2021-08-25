@@ -39,7 +39,6 @@ class ConfigurationPage(QWidget):
 
         self.setLayout(mainLayout)
 
-
 class UpdatePage(QWidget):
     def __init__(self, parent=None):
         super(UpdatePage, self).__init__(parent)
@@ -79,7 +78,6 @@ class UpdatePage(QWidget):
         mainLayout.addStretch(1)
 
         self.setLayout(mainLayout)
-
 
 class QueryPage(QWidget):
     def __init__(self, parent=None):
@@ -123,7 +121,6 @@ class QueryPage(QWidget):
         mainLayout.addStretch(1)
 
         self.setLayout(mainLayout)
-
 
 class ConfigDialog(QDialog):
     def __init__(self, parent=None):
@@ -192,7 +189,6 @@ class ConfigDialog(QDialog):
         queryButton.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
 
         self.contentsWidget.currentItemChanged.connect(self.changePage)
-
 
 if __name__ == '__main__':
 
