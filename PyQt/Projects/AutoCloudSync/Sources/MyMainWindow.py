@@ -46,9 +46,10 @@ def performOperations(pos1, pos2, pos3):
     x, y = pg.position()
 
     pg.hotkey('win', 'd') 
+    time.sleep(0.2)
     pg.moveTo(pos1[0], pos1[1], duration=0.0)
     pg.doubleClick()
-    time.sleep(0.1)
+    time.sleep(0.2)
     pg.moveTo(pos2[0], pos2[1], duration=0.0)
     pg.doubleClick()
     pg.moveTo(pos3[0], pos3[1], duration=0.1)
